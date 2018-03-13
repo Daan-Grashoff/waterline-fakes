@@ -96,7 +96,7 @@ exports.fakeWaterlineChainMethod = function (options) {
  * @param {*} [options.result=[]] The result value to be passed to the exec callback
  * @returns {Promise}
  */
-exports.fakeWaterlineChainMethod = function (options) {
+exports.fakeWaterlinePromiseChainMethod = function (options) {
   options = options || {};
 
   var err = _.has(options, 'err') ? options.err : null;
@@ -110,8 +110,8 @@ exports.fakeWaterlineChainMethod = function (options) {
 
   return () => new Promise((resolve, reject) => {
     if (err) {
-      return reject(err);
+      reject(err);
     }
-    return resolve(result);
+    resolve(result);
   });
 };
