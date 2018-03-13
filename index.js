@@ -86,3 +86,32 @@ exports.fakeWaterlineChainMethod = function (options) {
     };
   };
 };
+
+/**
+ * Creates a function that can be used to 'stub' a Waterline collection method. The passed options determine what values
+ * should be returned as promise.
+ *
+ * @param {object} [options]
+ * @param {*} [options.err=null] The error value to be passed to the exec callback
+ * @param {*} [options.result=[]] The result value to be passed to the exec callback
+ * @returns {Promise}
+ */
+exports.fakeWaterlineChainMethod = function (options) {
+  options = options || {};
+
+  var err = _.has(options, 'err') ? options.err : null;
+  var result;
+
+  if (!err && _.has(options, 'result')) {
+    result = options.result;
+  } else {
+    result = err ? null : [];
+  }
+
+  return () => new Promise((resolve, reject) => {
+    if (err) {
+      return reject(err);
+    }
+    return resolve(result);
+  });
+};
